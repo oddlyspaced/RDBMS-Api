@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class FolderController {
 
+    /**********************************
+     * Mappings of endpoints
+     **********************************/
+
     /**
      * Mapping to fetch all existing folders in database
      */
@@ -24,6 +28,10 @@ class FolderController {
      */
     @GetMapping("/folders/add")
     fun addFolder(@RequestParam(value = "name") name: String) = addFolderToDb(name)
+
+    /**********************************
+     * Operation functions
+     **********************************/
 
     /**
      * Function to read all folders from database
