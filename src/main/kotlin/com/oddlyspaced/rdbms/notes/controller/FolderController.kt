@@ -7,15 +7,28 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * Rest Controller for all Folder related operations
+ */
 @RestController
 class FolderController {
 
+    /**
+     * Mapping to fetch all existing folders in database
+     */
     @GetMapping("/folders/all")
     fun getFolders() = readFoldersFromDb()
 
+    /**
+     * Mapping to add a folder to database
+     */
     @GetMapping("/folders/add")
     fun addFolder(@RequestParam(value = "name") name: String) = addFolderToDb(name)
 
+    /**
+     * Function to read all folders from database
+     * @return List<Folder>: List of Folders from database
+     */
     private fun readFoldersFromDb(): List<Folder> {
         val folders = mutableListOf<Folder>()
         try {
@@ -36,6 +49,11 @@ class FolderController {
         return folders
     }
 
+    /**
+     * Function to add folder to database
+     * @param folderName: Folder name to add in database
+     * @return Response: Response message according to exit status of execution
+     */
     private fun addFolderToDb(folderName: String): Response {
         return try {
             println(folderName)
