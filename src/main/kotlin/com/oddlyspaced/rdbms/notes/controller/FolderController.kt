@@ -89,10 +89,25 @@ class FolderController {
      * @param folderName: Folder name to check for
      * @return Response message according to folders existence
      */
-    private fun checkFolderExistsInDb(folderName: String): Response {
+    fun checkFolderExistsInDb(folderName: String): Response {
         return try {
             val statement = DbConnection.connection.createStatement()
             val resultSet = statement.executeQuery("SELECT * FROM Folder WHERE Title = '$folderName';")
+            while (resultSet.next()) {
+                return Response("Exists")
+            }
+            Response("Does not exists")
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+            Response("Cannot determine!")
+        }
+    }
+
+    fun checkFolderExistsInDb(folderId: Int): Response {
+        return try {
+            val statement = DbConnection.connection.createStatement()
+            val resultSet = statement.executeQuery("SELECT * FROM Folder WHERE FolderID = '$folderId';")
             while (resultSet.next()) {
                 return Response("Exists")
             }
