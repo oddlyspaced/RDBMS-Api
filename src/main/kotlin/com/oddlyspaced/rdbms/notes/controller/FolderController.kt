@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController
 class FolderController {
 
     @GetMapping("/folders/all")
-    fun getFolders() = readFolders()
+    fun getFolders() = readFoldersFromDb()
 
-    @GetMapping("/folder/add")
+    @GetMapping("/folders/add")
     fun addFolder(@RequestParam(value = "name") name: String) = addFolderToDb(name)
 
-    private fun readFolders(): List<Folder> {
+    private fun readFoldersFromDb(): List<Folder> {
         val folders = mutableListOf<Folder>()
         try {
             val statement = DbConnection.connection.createStatement()
