@@ -20,20 +20,23 @@ class FolderController {
     /**
      * Mapping to fetch all existing folders in database
      */
-    @GetMapping("/folders/all")
+    @GetMapping("/folder/all")
     fun getFolders() = readFoldersFromDb()
 
     /**
      * Mapping to add a folder to database
      */
-    @GetMapping("/folders/add")
+    @GetMapping("/folder/add")
     fun addFolder(@RequestParam(value = "name") name: String) = addFolderToDb(name)
 
     /**
      * Mapping to check if folder exists in database
      */
-    @GetMapping("/folders/exists")
+    @GetMapping("/folder/exists")
     fun checkFolderExists(@RequestParam(value = "name") name: String) = checkFolderExistsInDb(name)
+
+    // TODO : Add endpoints to delete folder (by id, name)
+    // TODO : Add endpoints to search for folders
 
     /**********************************
      * Operation functions
