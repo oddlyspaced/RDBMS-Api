@@ -29,6 +29,12 @@ class FolderController {
     @GetMapping("/folders/add")
     fun addFolder(@RequestParam(value = "name") name: String) = addFolderToDb(name)
 
+    /**
+     * Mapping to check if folder exists in database
+     */
+    @GetMapping("/folders/exists")
+    fun checkFolderExists(@RequestParam(value = "name") name: String) = checkFolderExistsInDb(name)
+
     /**********************************
      * Operation functions
      **********************************/
@@ -72,6 +78,26 @@ class FolderController {
         } catch (e: Exception) {
             e.printStackTrace()
             Response("Unable to add folder!")
+        }
+    }
+
+    /**
+     * Function to check if a folder exists in database
+     * @param folderName: Folder name to check for
+     * @return Response message according to folders existence
+     */
+    private fun checkFolderExistsInDb(folderName: String): Response {
+        return try {
+            val statement = DbConnection.connection.createStatement()
+            val resultSet = statement.executeQuery("SELECT * FROM Folder WHERE Title = '$folderName';")
+            while (resultSet.next()) {
+                return Response("Exists")
+            }
+            Response("Does not exists")
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+            Response("Cannot determine!")
         }
     }
 
