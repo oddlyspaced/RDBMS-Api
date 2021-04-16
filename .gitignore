@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Global
+src/main/kotlin/com/oddlyspaced/rdbms/notes/global/
