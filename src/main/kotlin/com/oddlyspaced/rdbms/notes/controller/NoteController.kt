@@ -29,6 +29,7 @@ class NoteController {
                     Note(
                         resultSet.getInt(1),
                         resultSet.getString(2),
+                        resultSet.getString(3),
                     )
                 )
             }
