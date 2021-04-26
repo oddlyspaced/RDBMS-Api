@@ -1,6 +1,8 @@
 package com.oddlyspaced.rdbms.notes.controller
 
 import com.oddlyspaced.rdbms.notes.db.DbConnection
+import com.oddlyspaced.rdbms.notes.entity.CompleteNote
+import com.oddlyspaced.rdbms.notes.entity.Item
 import com.oddlyspaced.rdbms.notes.entity.Note
 import com.oddlyspaced.rdbms.notes.entity.Response
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,6 +20,11 @@ class NoteController {
         @RequestParam(value = "title") title: String,
         @RequestParam(value = "folderId", required = false) folderId: Int?
     ) = addNoteToDb(title, folderId?: 1)
+
+    @GetMapping("/note/fetch")
+    fun fetchNote(
+        @RequestParam(value = "noteId") noteId: Int
+    ) = fetchFullNote(noteId)
 
     private fun fetchNotesFromFolder(folderId: Int): MutableList<Note> {
         val notes = mutableListOf<Note>()
@@ -54,5 +61,37 @@ class NoteController {
             e.printStackTrace()
             Response("Unable to add Note!")
         }
+    }
+
+    private fun fetchFullNote(noteId: Int): CompleteNote? {
+        try {
+            val content = mutableListOf<Item>()
+            val resultSetContent = DbConnection.connection.createStatement().executeQuery("SELECT * FROM Item WHERE InNote = $noteId;")
+            while (resultSetContent.next()) {
+                content.add(
+                    Item(
+                        resultSetContent.getInt(1),
+                        resultSetContent.getString(2),
+                        resultSetContent.getBoolean(3),
+                    )
+                )
+            }
+
+            // SELECT * FROM Note WHERE NoteID = 1;
+            var note = Note(-1, "", "")
+            val resultSetNote = DbConnection.connection.createStatement().executeQuery("SELECT * FROM Item WHERE InNote = $noteId;")
+            while (resultSetNote.next()) {
+                note = Note(
+                    resultSetNote.getInt(1),
+                    resultSetNote.getString(2),
+                    resultSetNote.getString(3),
+                )
+            }
+            return CompleteNote(note, content)
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
     }
 }
