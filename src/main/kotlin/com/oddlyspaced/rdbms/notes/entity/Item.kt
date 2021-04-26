@@ -1,4 +1,4 @@
-package com.oddlyspaced.notes.modal
+package com.oddlyspaced.rdbms.notes.entity
 
 import com.google.gson.annotations.SerializedName
 
