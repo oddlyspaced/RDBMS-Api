@@ -1,12 +1,15 @@
 package com.oddlyspaced.rdbms.notes.controller
 
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.oddlyspaced.rdbms.notes.db.DbConnection
 import com.oddlyspaced.rdbms.notes.entity.Folder
 import com.oddlyspaced.rdbms.notes.entity.Item
 import com.oddlyspaced.rdbms.notes.entity.Note
+import com.oddlyspaced.rdbms.notes.entity.Response
 import org.springframework.data.jdbc.repository.query.Query
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
@@ -86,6 +89,27 @@ class FolderController {
             e.printStackTrace()
         }
         return items
+    }
+
+    @PostMapping("/note/update")
+    fun updateNote(
+        @RequestParam(value = "note") noteJson: String,
+    ): Response {
+        val type = object: TypeToken<Note>(){}.type
+        val note: Note = gson.fromJson(noteJson, type)
+        return updateNoteInDb(note)
+    }
+
+    private fun updateNoteInDb(note: Note): Response {
+        try {
+            val statement = DbConnection.connection.createStatement()
+            val resultSet = statement.execute("UPDATE Note SET Title=\"${note.title}\" WHERE NoteID = ${note.id};")
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+            return Response("Update Unsuccessful")
+        }
+        return Response("Updated Successfully ${note.title}")
     }
 
 
