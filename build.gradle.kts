@@ -24,6 +24,7 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	implementation("com.google.code.gson:gson:2.8.6")
+	implementation(files("/home/hardik/Package-Clones/mysql-jdbc/mysql-connector-java-8.0.23/mysql-connector-java-8.0.23.jar"))
 }
 
 tasks.withType<KotlinCompile> {
