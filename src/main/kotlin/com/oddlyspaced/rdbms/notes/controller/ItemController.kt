@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 class ItemController {
 
     @GetMapping("/item/get")
-    fun getNoteContent(@RequestParam(value = "noteID") noteId: Int) = fetchContentOfNote(noteId)
+    fun getNoteContent(@RequestParam(value = "noteId") noteId: Int) = fetchContentOfNote(noteId)
 
     @GetMapping("/item/add")
     fun addContent(
